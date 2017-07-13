@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="signup">ليس لديك حساب؟ قم بالتسجيل!</string>
+    <string name="signin">لديك حساب؟ قم بالدخول!</string>
+    <string name="email_hint">البريد الالكتروني</string>
+    <string name="name_hint">الاسم</string>
+    <string name="password_hint">كلمة المرور</string>
+    <string name="btn_signin">دخول</string>
+    <string name="btn_signup">تسجيل</string>
+    <string name="email_msg">ادخل بريدك الالكتروني!</string>
+    <string name="name_msg">ادخل اسمك!</string>
+    <string name="password_msg">ادخل كلمة المرور!</string>
+    <string name="password_limit">يجب الا تقل كلمة المرور عن 5 احرف!</string>
+    <string name="upload_msg_suc">تم تغيير صورتك الخاصه بنجاح</string>
+    <string name="upload_msg_fail">عذرا , فشل التحميل </string>
+    <string name="info_changed_msg_suc">تم تغيير اسمك بنجاح</string>
+    <string name="fb_auth_failed">فشل !</string>
+    <string name="source">مصدر الوصفة:</string>
+    <string name="src_url">رابط المصدر</string>
+    <string name="ingredients">المقادير</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="btn_save">حفظ</string>
+    <string name="old_password_hint">كلمة المرور القديمة</string>
+    <string name="new_password_hint">كلمة المرور الجديدة</string>
+    <string name="btn_reset_password">تغيير كلمة المرور</string>
+    <string name="change_password_suc">تم تغيير كلمة المرور بنجاح</string>
+    <string name="invalid_password">كلمة المرور غير مناسبة</string>
+    <string name="wrong_password">كلمة المرور خاطئة</string>
+    <string name="enter_password">ادخل كلمة المرور</string>
+    <string name="loading_info">تحميل البيانات</string>
+    <string name="loading_password">تغيير كلمة المرور </string>
+    <string name="up">زر الرجوع</string>
+    <string name="msg_hint">ادخل رسالة</string>
+    <string name="send_btn">ارسل</string>
+    <string name="send_msg">ارسل لنا رسالة</string>
+    <string name="contact_us">راسلنا</string>
+    <string name="msg_suc">تم ارسال رسالتك بنجاح</string>
+    <string name="about_us">عن التطبيق</string>
+
+
+
+
+
+    <string name="action_settings">الاعدادات</string>
+    <string name="drawer_others">اخري</string>
+    <string name="drawer_aboutus">عن التطبيق</string>
+    <string name="drawer_contactus">راسلنا</string>
+    <string name="drawer_logout">تسجيل الخروج</string>
+    <string name="drawer_find">اوجد وصفة للطبخ</string>
+    <string name="drawer_fav">مفضلاتي</string>
+
+
+    <string name="no_fav_toast">لا يوجد مفضلات بعد!</string>
+
+</resources>

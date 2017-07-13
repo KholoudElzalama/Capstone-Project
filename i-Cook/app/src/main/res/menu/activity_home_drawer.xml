@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_find"
+            android:icon="@android:drawable/ic_search_category_default"
+            android:title="@string/drawer_find"
+            />
+        <item
+            android:id="@+id/nav_fav"
+            android:icon="@android:drawable/btn_star_big_on"
+            android:title="@string/drawer_fav" />
+        <item
+            android:id="@+id/nav_contactus"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/drawer_contactus" />
+        <item
+            android:id="@+id/nav_aboutus"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="@string/drawer_aboutus" />
+
+    </group>
+
+    <item android:title= "@string/drawer_others">
+        <menu>
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_menu_revert"
+                android:title="@string/drawer_logout" />
+        </menu>
+    </item>
+
+</menu>

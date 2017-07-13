@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="android.kholoudelzalama.i_cook">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activities.SigninActivity" />
+        <activity android:name=".activities.SignupActivity" />
+        <activity
+            android:name=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.RecipeDetailsActivity"
+            android:parentActivityName=".activities.HomeActivity" />
+        <activity
+            android:name=".activities.UserProfileActivity"
+            android:parentActivityName=".activities.HomeActivity" />
+        <activity
+            android:name=".activities.ChangePasswordActivity"
+            android:parentActivityName=".activities.UserProfileActivity" />
+        <activity
+            android:name=".activities.ContactUsActivity"
+            android:parentActivityName=".activities.HomeActivity" />
+        <activity
+            android:name=".activities.AboutUsActivity"
+            android:parentActivityName=".activities.HomeActivity" />
+        <activity android:name=".activities.FavouritesActivity"
+            android:parentActivityName=".activities.HomeActivity"></activity>
+    </application>
+
+</manifest>
