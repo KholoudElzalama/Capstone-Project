@@ -39,7 +39,9 @@ public class AboutUsActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                String content;
                 content = dataSnapshot.getValue(String.class);
-                aboutUs.setText(content);
+                if(content!=null) {
+                    aboutUs.setText(content);
+                }
             }
 
             @Override

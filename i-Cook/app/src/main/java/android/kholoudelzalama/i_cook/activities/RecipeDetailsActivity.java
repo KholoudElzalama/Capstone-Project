@@ -85,8 +85,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 User user = new User();
                 user = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(User.class);
-                String key =String.valueOf(user.getFavourites().size());
                 try {
+
                     for (Recipe r : user.getFavourites()) {
                         if (r.getLabel().equals(recipe.getLabel())) {
                             isFav = true;

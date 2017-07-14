@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,11 +67,13 @@ public class HomeActivity extends AppCompatActivity
 
 
     private static final int API_LOADER = 10;
+    private static final int API_LOADER_NEXT_PAGE = 20;
 
 
     Gson gson;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBar;
 
     private RecyclerView recyclerView;
     private HomeAdapter adapter;
@@ -79,7 +82,7 @@ public class HomeActivity extends AppCompatActivity
 
 
 
-    public static final int PAGE_SIZE = 20;
+    public static final int PAGE_SIZE = 40;
     private boolean isLastPage = false;
     private int currentPage = 1;
     private boolean isLoading = false;
@@ -111,6 +114,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
         // Navigation header view
         navHeader = navigationView.getHeaderView(0);
         tv_name = (TextView) navHeader.findViewById(R.id.tv_name);
@@ -127,9 +131,8 @@ public class HomeActivity extends AppCompatActivity
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        currentPage=1;
                         getSupportLoaderManager().initLoader(API_LOADER, null, HomeActivity.this);
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }
@@ -160,8 +163,9 @@ public class HomeActivity extends AppCompatActivity
                         isLoading = true;
 
                         currentPage += 1;
-                        swipeRefreshLayout.setRefreshing(true);
-                        getSupportLoaderManager().initLoader(API_LOADER, null, HomeActivity.this);
+                        progressBar.setVisibility(View.VISIBLE);
+                        getSupportLoaderManager().initLoader(API_LOADER_NEXT_PAGE+currentPage, null, HomeActivity.this);
+
 
                     }
                 }
@@ -276,6 +280,7 @@ public class HomeActivity extends AppCompatActivity
                     int to = from + PAGE_SIZE;
                     URL url = NetworkUtils.buildUrl(searchQuery, String.valueOf(from) , String.valueOf(to));
                     String result = NetworkUtils.getResponseFromHttpUrl(url);
+
                     return result;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -289,15 +294,17 @@ public class HomeActivity extends AppCompatActivity
     public void onLoadFinished(Loader<String> loader, String data) {
         swipeRefreshLayout.setRefreshing(false);
         if (null == data) {
-            Toast.makeText(this, "No Data", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.api_limits), Toast.LENGTH_LONG).show();
+            isLastPage = true;
         } else {
             recipes = gson.fromJson(data, Recipes.class);
             adapter=new HomeAdapter(HomeActivity.this, recipes);
             recyclerView.setAdapter(adapter);
-
-
-
-
+            if(currentPage>1){
+                progressBar.setVisibility(View.INVISIBLE);
+                isLoading=false;
+                adapter.notifyDataSetChanged();
+            }
 
         }
     }

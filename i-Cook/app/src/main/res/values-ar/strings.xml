@@ -51,5 +51,6 @@
 
 
     <string name="no_fav_toast">لا يوجد مفضلات بعد!</string>
+    <string name="api_limits">نعتذر , لا يمكن استدعاء البيانات اكثر من 5 مرات في الدقيقه الواحده</string>
 
 </resources>

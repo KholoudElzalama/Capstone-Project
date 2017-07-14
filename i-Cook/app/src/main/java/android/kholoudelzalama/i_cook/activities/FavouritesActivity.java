@@ -30,6 +30,8 @@ public class FavouritesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private HomeAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private FirebaseAuth mAuth;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,28 +45,31 @@ public class FavouritesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.drawer_fav));
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        DatabaseReference myRef = database.getReference(getString(R.string.fb_users));
+         mAuth = FirebaseAuth.getInstance();
+         myRef = database.getReference(getString(R.string.fb_users));
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        recyclerView.setLayoutManager(gridLayoutManager);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        getFav();
 
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
-                        swipeRefreshLayout.setRefreshing(false);
                     }
                 }
         );
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
-        recyclerView.setLayoutManager(gridLayoutManager);
 
 
+        getFav();
+
+    }
+
+    private void getFav(){
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,13 +77,16 @@ public class FavouritesActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 User user = new User();
                 user = dataSnapshot.child(mAuth.getCurrentUser().getUid().toString()).getValue(User.class);
+                Recipes r = new Recipes();
                 if(user.getFavourites()==null){
                     swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(FavouritesActivity.this,getString(R.string.no_fav_toast),Toast.LENGTH_LONG).show();
-
+                    adapter=new HomeAdapter(FavouritesActivity.this, r);
+                    recyclerView.setAdapter(adapter);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
                 else {
-                    Recipes r = new Recipes();
+
                     List<Hits> hits = new ArrayList<Hits>();
                     for(Recipe re : user.getFavourites()){
                         Hits h = new Hits();
