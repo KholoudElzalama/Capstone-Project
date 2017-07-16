@@ -63,7 +63,6 @@ public class HomeActivity extends AppCompatActivity
     private ImageView iv_profile;
     private TextView tv_name, tv_email;
 
-    private boolean loading;
 
 
     private static final int API_LOADER = 10;
@@ -103,7 +102,6 @@ public class HomeActivity extends AppCompatActivity
 
         gson = new Gson();
         recipes = new Recipes();
-        loading=false;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -192,7 +190,7 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_find) {
-            // Handle the camera action
+            startActivity(new Intent(HomeActivity.this, SearchRecipeActivity.class));
         } else if (id == R.id.nav_fav) {
             startActivity(new Intent(HomeActivity.this, FavouritesActivity.class));
         } else if (id == R.id.nav_aboutus) {
@@ -295,11 +293,13 @@ public class HomeActivity extends AppCompatActivity
         swipeRefreshLayout.setRefreshing(false);
         if (null == data) {
             Toast.makeText(this, getString(R.string.api_limits), Toast.LENGTH_LONG).show();
-            isLastPage = true;
         } else {
             recipes = gson.fromJson(data, Recipes.class);
             adapter=new HomeAdapter(HomeActivity.this, recipes);
             recyclerView.setAdapter(adapter);
+            if(recipes.getHits().size()==0){
+                isLastPage = true;
+            }
             if(currentPage>1){
                 progressBar.setVisibility(View.INVISIBLE);
                 isLoading=false;

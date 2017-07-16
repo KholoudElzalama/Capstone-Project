@@ -84,6 +84,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 User user = new User();
+
                 user = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(User.class);
                 try {
 
@@ -152,35 +153,39 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 }
             });
         }
-        else{
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                User user = new User();
-                 user = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(User.class);
-                String key;
-                if(user.getFavourites()==null){
-                    key =String.valueOf(0);
-                }
-                else {
-                    key = String.valueOf(user.getFavourites().size());
-                }
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference(getString(R.string.fb_users));
-                ref.child(mAuth.getCurrentUser().getUid()).child(getString(R.string.fb_fav)).child(key).setValue(recipe);
-                fab.setImageResource(R.drawable.ic_christmas_star_48);
-                isFav=true;
+        else {
+            if (mAuth.getCurrentUser() == null) {
+                startActivity(new Intent(RecipeDetailsActivity.this,SigninActivity.class));
             }
+            else {
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        User user = new User();
+                        user = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(User.class);
+                        String key;
+                        if (user.getFavourites() == null) {
+                            key = String.valueOf(0);
+                        } else {
+                            key = String.valueOf(user.getFavourites().size());
+                        }
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference ref = database.getReference(getString(R.string.fb_users));
+                        ref.child(mAuth.getCurrentUser().getUid()).child(getString(R.string.fb_fav)).child(key).setValue(recipe);
+                        fab.setImageResource(R.drawable.ic_christmas_star_48);
+                        isFav = true;
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("RecipeActivity", "Failed to read value.", error.toException());
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                        Log.w("RecipeActivity", "Failed to read value.", error.toException());
+                    }
+                });
+
             }
-        });
-
-    }
+        }
     }
 }

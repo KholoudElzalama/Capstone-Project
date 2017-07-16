@@ -36,7 +36,7 @@
     <string name="contact_us">راسلنا</string>
     <string name="msg_suc">تم ارسال رسالتك بنجاح</string>
     <string name="about_us">عن التطبيق</string>
-
+    <string name="no_result">عذرا, لا يوجد نتيجة لهذا البحث</string>
 
 
 
@@ -52,5 +52,7 @@
 
     <string name="no_fav_toast">لا يوجد مفضلات بعد!</string>
     <string name="api_limits">نعتذر , لا يمكن استدعاء البيانات اكثر من 5 مرات في الدقيقه الواحده</string>
+    <string name="find_btn">اوجد</string>
+    <string name="query_error">ادخل قيمة</string>
 
 </resources>

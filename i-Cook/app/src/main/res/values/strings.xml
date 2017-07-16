@@ -52,6 +52,10 @@
 
     <string name="no_fav_toast">You have no favourites yet!</string>
     <string name="api_limits">Sorry, the limit utilization of hits for this api only 5 per minute</string>
+    <string name="find_btn">find</string>
+    <string name="search_hint" translatable="false">eg: egg,milk,sugar</string>
+    <string name="query_error">Enter query</string>
+    <string name="no_result">Sorry, no result for this query</string>
 
 
     <!--firebase strings-->
@@ -66,6 +70,9 @@
 
     <!--intent extras-->
     <string name="recipe_details_extra" translatable="false">recipeDetails</string>
+    <string name="query_extra" translatable="false">query</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
 
 

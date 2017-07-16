@@ -37,8 +37,35 @@
         <activity
             android:name=".activities.AboutUsActivity"
             android:parentActivityName=".activities.HomeActivity" />
-        <activity android:name=".activities.FavouritesActivity"
-            android:parentActivityName=".activities.HomeActivity"></activity>
+        <activity
+            android:name=".activities.FavouritesActivity"
+            android:parentActivityName=".activities.HomeActivity" />
+        <activity
+            android:name=".activities.SearchRecipeActivity"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.kholoudelzalama.i_cook.activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".activities.FindResultActivity"
+            android:parentActivityName=".activities.SearchRecipeActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.kholoudelzalama.i_cook.activities.SearchRecipeActivity" />
+        </activity>
+
+        <receiver android:name=".widget.SearchWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/search_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
