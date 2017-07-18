@@ -158,6 +158,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         progressDialog.show();
         if (requestCode == GALLERY_INTENT) {
+            try{
             Uri uri = data.getData();
             myRef = database.getReference(getString(R.string.fb_users));
             mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -184,6 +185,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
                         }
                     });
+        }catch (Exception e){
+                e.printStackTrace();
+                progressDialog.dismiss();
+            }
         }
     }
 
