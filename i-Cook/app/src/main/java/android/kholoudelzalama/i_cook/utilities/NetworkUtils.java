@@ -33,35 +33,32 @@ public class NetworkUtils {
     static String health = "alcohol-free";
 
 
-    public static URL buildUrl(String searchQuery , String from , String to) {
-        String query ;
+    public static URL buildUrl(String searchQuery, String from, String to) {
+        String query;
         final String calsEnc;
         Uri builtUri = null;
-        if(searchQuery == null){
-            query="";
-        }
-        else
-        {
+        if (searchQuery == null) {
+            query = "";
+        } else {
             query = searchQuery;
         }
 
 
-             builtUri = Uri.parse(BASE_URL).buildUpon()
-                    .appendQueryParameter(PARAM_QUERY,query)
-                    .appendQueryParameter(PARAM_APP_ID, APP_ID)
-                    .appendQueryParameter(PARAM_APP_KEY, APP_KEY)
-                    .appendQueryParameter(PARAM_FROM, from)
-                    .appendQueryParameter(PARAM_TO, to)
-                    .appendQueryParameter(PARAM_HEALTH, health)
-                    .build();
+        builtUri = Uri.parse(BASE_URL).buildUpon()
+                .appendQueryParameter(PARAM_QUERY, query)
+                .appendQueryParameter(PARAM_APP_ID, APP_ID)
+                .appendQueryParameter(PARAM_APP_KEY, APP_KEY)
+                .appendQueryParameter(PARAM_FROM, from)
+                .appendQueryParameter(PARAM_TO, to)
+                .appendQueryParameter(PARAM_HEALTH, health)
+                .build();
 
 
-        
         URL url = null;
         try {
-            url = new URL(builtUri.toString()+"&calories=gte%20591,%20lte%20722");
+            url = new URL(builtUri.toString() + "&calories=gte%20591,%20lte%20722");
 
-            Log.d("NetworkUtils",url.toString());
+            Log.d("NetworkUtils", url.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

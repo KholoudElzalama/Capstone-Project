@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lv_header">
+    android:id="@+id/lv_header"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TextView
-        android:text="@string/source"
+        android:id="@+id/tv_src_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_src_title"
-        android:textSize="@dimen/text_size"
-        android:layout_marginTop="33dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingStart="@dimen/padding"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="33dp"
+        android:paddingStart="@dimen/padding"
+        android:text="@string/source"
+        android:textSize="@dimen/text_size" />
 
     <TextView
-        tools:text="TextView"
+        android:id="@+id/tv_src"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_src"
-        android:textSize="@dimen/text_size"
-        android:layout_marginLeft="27dp"
-        android:layout_marginStart="27dp"
         android:layout_alignBaseline="@+id/tv_src_title"
         android:layout_alignBottom="@+id/tv_src_title"
-        android:layout_toRightOf="@+id/tv_src_title"
+        android:layout_marginLeft="27dp"
+        android:layout_marginStart="27dp"
         android:layout_toEndOf="@+id/tv_src_title"
-        />
+        android:layout_toRightOf="@+id/tv_src_title"
+        android:textSize="@dimen/text_size"
+        tools:text="TextView" />
 
     <TextView
-        android:text="@string/src_url"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/padding"
-        android:paddingStart="@dimen/padding"
-        android:paddingEnd="@dimen/padding"
-        android:gravity="center_horizontal"
-        android:textSize="@dimen/text_size"
         android:id="@+id/tv_url_title"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/tv_src_title"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="?colorPrimary"
-        android:onClick="toSource"/>
-    <TextView
-        android:text="@string/ingredients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:gravity="center_horizontal"
-        android:textSize="@dimen/text_size_title"
-        android:id="@+id/tv_ing_title"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/tv_url_title"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/tv_src_title"
+        android:layout_marginTop="17dp"
+        android:gravity="center_horizontal"
+        android:onClick="toSource"
+        android:paddingEnd="@dimen/padding"
+        android:paddingStart="@dimen/padding"
+        android:paddingTop="@dimen/padding"
+        android:text="@string/src_url"
+        android:textColor="?colorPrimary"
+        android:textSize="@dimen/text_size" />
+
+    <TextView
+        android:id="@+id/tv_ing_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tv_url_title"
+        android:layout_marginTop="17dp"
+        android:background="?colorPrimary"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/padding"
+        android:text="@string/ingredients"
         android:textColor="?android:colorBackground"
-        android:background="?colorPrimary"/>
+        android:textSize="@dimen/text_size_title" />
 </RelativeLayout>

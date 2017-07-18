@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/activity_favourites"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="android.kholoudelzalama.i_cook.activities.FavouritesActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/abc_action_bar_default_height_material"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:background="?attr/colorPrimary"
-        android:theme="@style/AppTheme.AppBarOverlay"
         android:elevation="4dp"
-        />
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:tools="http://schemas.android.com/tools"
+        android:minHeight="@dimen/abc_action_bar_default_height_material"
+        android:theme="@style/AppTheme.AppBarOverlay" />
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        >
+        android:paddingTop="@dimen/activity_vertical_margin">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"

@@ -9,29 +9,24 @@ public class Ingredients {
 
     private String weight;
 
-    public String getText ()
-    {
+    public String getText() {
         return text;
     }
 
-    public void setText (String text)
-    {
+    public void setText(String text) {
         this.text = text;
     }
 
-    public String getWeight ()
-    {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight (String weight)
-    {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [text = "+text+", weight = "+weight+"]";
+    public String toString() {
+        return "ClassPojo [text = " + text + ", weight = " + weight + "]";
     }
 }

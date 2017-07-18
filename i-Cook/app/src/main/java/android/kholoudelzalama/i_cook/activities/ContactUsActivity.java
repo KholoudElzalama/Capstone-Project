@@ -2,6 +2,7 @@ package android.kholoudelzalama.i_cook.activities;
 
 import android.kholoudelzalama.i_cook.R;
 import android.kholoudelzalama.i_cook.objects.User;
+import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,16 +29,19 @@ public class ContactUsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        msg =(EditText) findViewById(R.id.et_msg) ;
+        msg = (EditText) findViewById(R.id.et_msg);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.contact_us));
+        if (!NetworkConnectivity.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show();
+        }
 
     }
 
-    public void sendMsg(View view){
+    public void sendMsg(View view) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference myRef = database.getReference(getString(R.string.fb_users));
@@ -49,17 +53,16 @@ public class ContactUsActivity extends AppCompatActivity {
                 User user = new User();
                 user = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(User.class);
                 String key;
-                if(user.getMsgs()==null){
-                    key =String.valueOf(0);
-                }
-                else {
+                if (user.getMsgs() == null) {
+                    key = String.valueOf(0);
+                } else {
                     key = String.valueOf(user.getMsgs().size());
                 }
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference(getString(R.string.fb_users));
                 ref.child(mAuth.getCurrentUser().getUid()).child(getString(R.string.fb_msg)).child(key).setValue(msg.getText().toString());
                 msg.setText("");
-                Toast.makeText(ContactUsActivity.this,getString(R.string.msg_suc),Toast.LENGTH_LONG).show();
+                Toast.makeText(ContactUsActivity.this, getString(R.string.msg_suc), Toast.LENGTH_LONG).show();
             }
 
             @Override

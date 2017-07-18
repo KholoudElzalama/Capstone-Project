@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.kholoudelzalama.i_cook.R;
 import android.kholoudelzalama.i_cook.adapters.HomeAdapter;
 import android.kholoudelzalama.i_cook.objects.Recipes;
+import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
 import android.kholoudelzalama.i_cook.utilities.NetworkUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ public class FindResultActivityFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private HomeAdapter adapter;
-
+    private boolean isConnected = true;
 
 
     public FindResultActivityFragment() {
@@ -50,13 +51,17 @@ public class FindResultActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView =inflater.inflate(R.layout.fragment_find_result, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_find_result, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        if (!NetworkConnectivity.isNetworkAvailable(getContext())) {
+            Toast.makeText(getContext(), getString(R.string.no_network), Toast.LENGTH_LONG).show();
+            isConnected = false;
+        }
         Intent intent = getActivity().getIntent();
         gson = new Gson();
-        final String query =  getArguments().getString(getString(R.string.query_extra));
+        final String query = getArguments().getString(getString(R.string.query_extra));
         getActivity().setTitle(query);
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(
@@ -64,13 +69,13 @@ public class FindResultActivityFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         swipeRefreshLayout.setRefreshing(true);
-                        currentPage=1;
+                        currentPage = 1;
                         new SearchResult().execute(query);
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }
         );
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -95,7 +100,6 @@ public class FindResultActivityFragment extends Fragment {
                         progressBar.setVisibility(View.VISIBLE);
 
 
-
                     }
                 }
             }
@@ -104,15 +108,15 @@ public class FindResultActivityFragment extends Fragment {
         return rootView;
     }
 
-    class SearchResult extends AsyncTask<String,Integer,String>{
+    class SearchResult extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             try {
                 String query = strings[0];
-                int from = PAGE_SIZE *(currentPage-1);
+                int from = PAGE_SIZE * (currentPage - 1);
                 int to = from + PAGE_SIZE;
-                URL url = NetworkUtils.buildUrl(query, String.valueOf(from) , String.valueOf(to));
+                URL url = NetworkUtils.buildUrl(query, String.valueOf(from), String.valueOf(to));
                 String result = NetworkUtils.getResponseFromHttpUrl(url);
 
                 return result;
@@ -127,22 +131,24 @@ public class FindResultActivityFragment extends Fragment {
             super.onPostExecute(s);
             swipeRefreshLayout.setRefreshing(false);
             if (null == s) {
-                Toast.makeText(getContext(), getString(R.string.api_limits), Toast.LENGTH_LONG).show();
+                if (isConnected) {
+                    Toast.makeText(getContext(), getString(R.string.api_limits), Toast.LENGTH_LONG).show();
+                }
 
             } else {
                 recipes = gson.fromJson(s, Recipes.class);
-                adapter=new HomeAdapter(getContext(), recipes);
+                adapter = new HomeAdapter(getContext(), recipes);
                 recyclerView.setAdapter(adapter);
-                if(recipes.getHits().size()==0){
+                if (recipes.getHits().size() == 0) {
                     isLastPage = true;
                 }
-                if (recipes.getHits().size()==0 && currentPage ==1){
+                if (recipes.getHits().size() == 0 && currentPage == 1) {
                     Toast.makeText(getContext(), getString(R.string.no_result), Toast.LENGTH_LONG).show();
                     isLastPage = true;
                 }
-                if(currentPage>1){
+                if (currentPage > 1) {
                     progressBar.setVisibility(View.INVISIBLE);
-                    isLoading=false;
+                    isLoading = false;
                     adapter.notifyDataSetChanged();
                 }
 

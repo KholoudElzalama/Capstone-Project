@@ -5,6 +5,7 @@ import android.kholoudelzalama.i_cook.R;
 import android.kholoudelzalama.i_cook.adapters.IngredientsAdapter;
 import android.kholoudelzalama.i_cook.objects.Recipe;
 import android.kholoudelzalama.i_cook.objects.User;
+import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +34,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private Gson gson;
 
     private RecyclerView recyclerView;
-    private FloatingActionButton  fab;
+    private FloatingActionButton fab;
     private ImageView recipePic;
 
 
@@ -49,19 +51,22 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        if (!NetworkConnectivity.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show();
+        }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference myRef = database.getReference(getString(R.string.fb_users));
         gson = new Gson();
         isFav = false;
         extra = getIntent().getStringExtra(getString(R.string.recipe_details_extra));
-        recipe = gson.fromJson(extra,Recipe.class);
+        recipe = gson.fromJson(extra, Recipe.class);
         getSupportActionBar().setTitle(recipe.getLabel());
-        recyclerView =(RecyclerView) findViewById(R.id.rv_ingreients);
-        fab = (FloatingActionButton)findViewById(R.id.fab_fav);
-        recipePic = (ImageView)findViewById(R.id.iv_recipe_photo);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_ingreients);
+        fab = (FloatingActionButton) findViewById(R.id.fab_fav);
+        recipePic = (ImageView) findViewById(R.id.iv_recipe_photo);
 
-        //src =(TextView)header.findViewById(R.id.tv_src);
+
         setTitle(recipe.getLabel());
         Picasso.with(this).load(recipe.getImage()).placeholder(R.drawable.loading).fit().centerCrop().into(recipePic, new com.squareup.picasso.Callback() {
             @Override
@@ -74,8 +79,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
             }
         });
-       // src.setText(recipe.getSource());
-        recyclerView.setAdapter(new IngredientsAdapter(recipe,RecipeDetailsActivity.this));
+
+        recyclerView.setAdapter(new IngredientsAdapter(recipe, RecipeDetailsActivity.this));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RecipeDetailsActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -93,13 +98,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                             isFav = true;
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if(isFav){
+                if (isFav) {
                     fab.setImageResource(R.drawable.ic_christmas_star_48);
-                }
-                else{
+                } else {
                     fab.setImageResource(R.drawable.ic_star_48);
                 }
             }
@@ -112,19 +116,19 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         });
 
 
-
     }
 
-    public void toSource(View view){
+    public void toSource(View view) {
         Uri webpage = Uri.parse(recipe.getUrl());
         Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
         startActivity(webIntent);
     }
-    public void makeFav(View view){
+
+    public void makeFav(View view) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference myRef = database.getReference(getString(R.string.fb_users));
-        if(isFav){
+        if (isFav) {
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -133,9 +137,9 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     User user = new User();
                     int index = -1;
                     user = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(User.class);
-                    for(int i =0 ;i< user.getFavourites().size();i++){
-                        if(user.getFavourites().get(i).getLabel().equals(recipe.getLabel()) ){
-                           index = i;
+                    for (int i = 0; i < user.getFavourites().size(); i++) {
+                        if (user.getFavourites().get(i).getLabel().equals(recipe.getLabel())) {
+                            index = i;
                         }
                     }
                     user.getFavourites().remove(index);
@@ -143,7 +147,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     DatabaseReference ref = database.getReference(getString(R.string.fb_users));
                     ref.child(mAuth.getCurrentUser().getUid()).child(getString(R.string.fb_fav)).setValue(user.getFavourites());
                     fab.setImageResource(R.drawable.ic_star_48);
-                    isFav =false;
+                    isFav = false;
                 }
 
                 @Override
@@ -152,12 +156,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                     Log.w("RecipeActivity", "Failed to read value.", error.toException());
                 }
             });
-        }
-        else {
+        } else {
             if (mAuth.getCurrentUser() == null) {
-                startActivity(new Intent(RecipeDetailsActivity.this,SigninActivity.class));
-            }
-            else {
+                startActivity(new Intent(RecipeDetailsActivity.this, SigninActivity.class));
+            } else {
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

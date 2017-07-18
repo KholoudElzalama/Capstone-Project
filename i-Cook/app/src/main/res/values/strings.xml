@@ -56,6 +56,12 @@
     <string name="search_hint" translatable="false">eg: egg,milk,sugar</string>
     <string name="query_error">Enter query</string>
     <string name="no_result">Sorry, no result for this query</string>
+    <string name="no_network">Check your internet connection</string>
+    <string name="make_fav">Make favourite</string>
+    <string name="user_pic">Profile picture</string>
+    <string name="edit_pic">Edit picture</string>
+    <string name="recipe_pic">Recipe picture</string>
+    <string name="user_prof">User profile</string>
 
 
     <!--firebase strings-->
@@ -71,8 +77,8 @@
     <!--intent extras-->
     <string name="recipe_details_extra" translatable="false">recipeDetails</string>
     <string name="query_extra" translatable="false">query</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+
+
 </resources>
 
 

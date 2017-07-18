@@ -2,6 +2,7 @@ package android.kholoudelzalama.i_cook.activities;
 
 import android.content.Intent;
 import android.kholoudelzalama.i_cook.R;
+import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -16,38 +17,46 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static android.kholoudelzalama.i_cook.R.id.et_email;
+import static android.kholoudelzalama.i_cook.R.id.et_password;
+
 public class SigninActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private EditText et_email;
-    private EditText et_password;
+    private EditText emailEditText;
+    private EditText passwordEditText;
     private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        et_email =(EditText)findViewById(R.id.et_email);
-        et_password =(EditText)findViewById(R.id.et_password);
+        emailEditText = (EditText) findViewById(et_email);
+        passwordEditText = (EditText) findViewById(et_password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        if (!NetworkConnectivity.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show();
+        }
 
 
     }
 
-    public  void toSignUp(View view){
-        Intent intent = new Intent(SigninActivity.this,SignupActivity.class);
+    public void toSignUp(View view) {
+        Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
         startActivity(intent);
         finish();
     }
 
-    public void signIn (View view){
+    public void signIn(View view) {
 
         mAuth = FirebaseAuth.getInstance();
 
 
-        final String email = et_email.getText().toString();
+        final String email = emailEditText.getText().toString();
 
-        String password =  et_password.getText().toString();
+        String password = passwordEditText.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), getString(R.string.email_msg), Toast.LENGTH_SHORT).show();
@@ -70,9 +79,8 @@ public class SigninActivity extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Toast.makeText(SigninActivity.this, getString(R.string.fb_auth_failed), Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            startActivity(new Intent(SigninActivity.this,HomeActivity.class));
+                        } else {
+                            startActivity(new Intent(SigninActivity.this, HomeActivity.class));
                             finish();
                         }
                         // ...

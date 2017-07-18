@@ -22,11 +22,9 @@ public class SearchWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.search_widget);
-        views.setTextViewText(R.id.et_appwidget,"example");
         Intent intent = new Intent(context, SearchRecipeActivity.class);
-        pendingIntent = PendingIntent.getActivity(context, 0, intent,0);
-        views.setOnClickPendingIntent(R.id.et_appwidget,pendingIntent);
-
+        pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.et_appwidget, pendingIntent);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

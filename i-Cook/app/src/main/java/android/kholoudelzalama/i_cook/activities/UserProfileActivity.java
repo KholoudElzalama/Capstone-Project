@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.kholoudelzalama.i_cook.R;
 import android.kholoudelzalama.i_cook.objects.User;
+import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -38,13 +39,12 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static  final  int  GALLERY_INTENT = 10;
-    private DatabaseReference myRef ;
-    private  String uid;
+    private static final int GALLERY_INTENT = 10;
+    private DatabaseReference myRef;
+    private String uid;
     private User user;
     private FirebaseAuth auth;
     private StorageReference mStorageRef;
-    private View mUpButton;
     EditText name;
     TextView email;
     ImageView userPic;
@@ -59,30 +59,29 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        setTitle(getString(R.string.user_prof));
+        if (!NetworkConnectivity.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show();
+        }
+
         auth = FirebaseAuth.getInstance();
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        name = (EditText)findViewById(R.id.editText_name);
+        name = (EditText) findViewById(R.id.editText_name);
         email = (TextView) findViewById(R.id.editText_email);
-        userPic = (ImageView)findViewById(iv_pp);
-        mUpButton = findViewById(R.id.action_up);
-        mUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSupportNavigateUp();
-            }
-        });
+        userPic = (ImageView) findViewById(iv_pp);
+
         if (auth.getCurrentUser() != null) {
-            uid=auth.getCurrentUser().getUid();
+            uid = auth.getCurrentUser().getUid();
 
         }
 
-        progressDialog =new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.loading_info));
         progressDialog.show();
         getCurrentStudent();
     }
 
-    public void getCurrentStudent(){
+    public void getCurrentStudent() {
 
         myRef = database.getReference(getString(R.string.fb_users));
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -92,9 +91,10 @@ public class UserProfileActivity extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 User s = new User();
-                s=dataSnapshot.child(uid).getValue(User.class);
+                s = dataSnapshot.child(uid).getValue(User.class);
                 name.setText(s.getName());
                 email.setText(s.getEmail());
+
                 try {
                     mStorageRef.child(getString(R.string.fb_pp_folder)).child(s.getPhoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
@@ -103,7 +103,8 @@ public class UserProfileActivity extends AppCompatActivity {
                             Picasso.with(UserProfileActivity.this).load(uri).placeholder(R.drawable.loading).fit().centerCrop().into(userPic, new com.squareup.picasso.Callback() {
                                 @Override
                                 public void onSuccess() {
-                                    progressDialog.dismiss();
+                                    if (progressDialog.isShowing()) {
+                                        progressDialog.dismiss();                                    }
                                 }
 
                                 @Override
@@ -120,16 +121,15 @@ public class UserProfileActivity extends AppCompatActivity {
                         }
                     });
 
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.d("user Acoount class", e.getMessage());
                     progressDialog.dismiss();
 
                 }
 
 
-
             }
+
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
@@ -139,11 +139,13 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
     }
-    public void saveChanges(View view){
+
+    public void saveChanges(View view) {
         myRef = database.getReference(getString(R.string.fb_users));
         myRef.child(uid).child(getString(R.string.fb_users_name)).setValue(name.getText().toString());
-        Toast.makeText(UserProfileActivity.this,getString(R.string.info_changed_msg_suc),Toast.LENGTH_LONG).show();
+        Toast.makeText(UserProfileActivity.this, getString(R.string.info_changed_msg_suc), Toast.LENGTH_LONG).show();
     }
+
     public void editPic(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -155,22 +157,22 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         progressDialog.show();
-        if(requestCode==GALLERY_INTENT ){
+        if (requestCode == GALLERY_INTENT) {
             Uri uri = data.getData();
             myRef = database.getReference(getString(R.string.fb_users));
             mStorageRef = FirebaseStorage.getInstance().getReference();
-            StorageReference picRef = mStorageRef.child(getString(R.string.fb_pp_folder).toString()).child(auth.getCurrentUser().getUid().toString()+"pp");
+            StorageReference picRef = mStorageRef.child(getString(R.string.fb_pp_folder).toString()).child(auth.getCurrentUser().getUid().toString() + "pp");
             picRef.putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // Get a URL to the uploaded content
                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            myRef.child(auth.getCurrentUser().getUid().toString()).child(getString(R.string.fb_users_pp)).setValue(auth.getCurrentUser().getUid().toString()+"pp");
+                            myRef.child(auth.getCurrentUser().getUid().toString()).child(getString(R.string.fb_users_pp)).setValue(auth.getCurrentUser().getUid().toString() + "pp");
                             Random rand = new Random();
                             int pickedNumber = rand.nextInt(40) + 1;
                             myRef.child(auth.getCurrentUser().getUid().toString()).child("is_changed").setValue(pickedNumber);
-                            Toast.makeText(getApplicationContext(),getString(R.string.upload_msg_suc).toString(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.upload_msg_suc).toString(), Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
                         }
                     })
@@ -178,15 +180,15 @@ public class UserProfileActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(),getString(R.string.upload_msg_fail).toString(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.upload_msg_fail).toString(), Toast.LENGTH_LONG).show();
 
                         }
                     });
         }
     }
 
-    public void toChangePassword(View view){
-        Intent intent = new Intent(UserProfileActivity.this,ChangePasswordActivity.class);
+    public void toChangePassword(View view) {
+        Intent intent = new Intent(UserProfileActivity.this, ChangePasswordActivity.class);
         startActivity(intent);
     }
 }

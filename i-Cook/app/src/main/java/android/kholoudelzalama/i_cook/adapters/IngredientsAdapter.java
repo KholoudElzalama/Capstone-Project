@@ -20,10 +20,11 @@ public class IngredientsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-   public IngredientsAdapter(Recipe r,Context c){
-       recipe = r;
-       mContext = c;
-   }
+    public IngredientsAdapter(Recipe r, Context c) {
+        recipe = r;
+        mContext = c;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -46,20 +47,20 @@ public class IngredientsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ViewHolderHeader vh = (ViewHolderHeader) holder;
             vh.src.setText(recipe.getSource());
         } else if (holder instanceof ViewHolderItem) {
-            ViewHolderItem vh = (ViewHolderItem)holder;
-            vh.ingredient.setText(recipe.getIngredientLines().get(position-1));
+            ViewHolderItem vh = (ViewHolderItem) holder;
+            vh.ingredient.setText(recipe.getIngredientLines().get(position - 1));
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return recipe.getIngredientLines().size()+1;
+        return recipe.getIngredientLines().size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position==0)
+        if (position == 0)
             return TYPE_HEADER;
 
         return TYPE_ITEM;
@@ -84,7 +85,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public ViewHolderHeader(View view) {
             super(view);
-            src = (TextView)view.findViewById(R.id.tv_src);
+            src = (TextView) view.findViewById(R.id.tv_src);
 
         }
     }

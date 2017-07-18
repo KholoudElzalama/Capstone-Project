@@ -31,118 +31,94 @@ public class Recipe {
     private String calories;
 
 
-
-    public String getYield ()
-    {
+    public String getYield() {
         return yield;
     }
 
-    public void setYield (String yield)
-    {
+    public void setYield(String yield) {
         this.yield = yield;
     }
 
 
-    public List<String> getIngredientLines ()
-    {
+    public List<String> getIngredientLines() {
         return ingredientLines;
     }
 
-    public void setIngredientLines (List<String> ingredientLines)
-    {
+    public void setIngredientLines(List<String> ingredientLines) {
         this.ingredientLines = ingredientLines;
     }
 
-    public String getImage ()
-    {
+    public String getImage() {
         return image;
     }
 
-    public void setImage (String image)
-    {
+    public void setImage(String image) {
         this.image = image;
     }
 
 
-
-    public String getLabel ()
-    {
+    public String getLabel() {
         return label;
     }
 
-    public void setLabel (String label)
-    {
+    public void setLabel(String label) {
         this.label = label;
     }
 
-    public String getUri ()
-    {
+    public String getUri() {
         return uri;
     }
 
-    public void setUri (String uri)
-    {
+    public void setUri(String uri) {
         this.uri = uri;
     }
 
-    public String getUrl ()
-    {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl (String url)
-    {
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    public String getShareAs ()
-    {
+    public String getShareAs() {
         return shareAs;
     }
 
-    public void setShareAs (String shareAs)
-    {
+    public void setShareAs(String shareAs) {
         this.shareAs = shareAs;
     }
 
-    public List<Ingredients> getIngredients ()
-    {
+    public List<Ingredients> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients (List<Ingredients> ingredients)
-    {
+    public void setIngredients(List<Ingredients> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public String getSource ()
-    {
+    public String getSource() {
         return source;
     }
 
-    public void setSource (String source)
-    {
+    public void setSource(String source) {
         this.source = source;
     }
 
-    public String getTotalWeight ()
-    {
+    public String getTotalWeight() {
         return totalWeight;
     }
 
-    public void setTotalWeight (String totalWeight)
-    {
+    public void setTotalWeight(String totalWeight) {
         this.totalWeight = totalWeight;
     }
 
 
-    public String getCalories ()
-    {
+    public String getCalories() {
         return calories;
     }
 
-    public void setCalories (String calories)
-    {
+    public void setCalories(String calories) {
         this.calories = calories;
     }
 

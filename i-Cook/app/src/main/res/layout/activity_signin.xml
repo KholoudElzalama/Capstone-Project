@@ -2,79 +2,80 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_signin"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background1"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="android.kholoudelzalama.i_cook.activities.SigninActivity"
     android:weightSum="1"
-    android:background="@drawable/background1">
+    tools:context="android.kholoudelzalama.i_cook.activities.SigninActivity">
+
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linear_layout">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textStyle="bold"
-        android:textSize="@dimen/title_size"
-        android:fontFamily="cursive"
-        android:layout_gravity="center_horizontal"
-        android:padding="@dimen/padding"/>
-
-
-
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/et_email"
-        android:hint="@string/email_hint"
-        android:padding="@dimen/padding" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/et_password"
-        android:hint="@string/password_hint"
-        android:padding="@dimen/padding"
-        />
-
-    <Button
-        android:text="@string/btn_signin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding"
-        android:id="@+id/btn_signin"
-        android:onClick="signIn"/>
+        android:orientation="vertical">
 
         <TextView
-            android:text="@string/signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name"
+            android:fontFamily="cursive"
+            android:padding="@dimen/padding"
+            android:text="@string/app_name"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/email_hint"
+            android:inputType="textEmailAddress"
+            android:padding="@dimen/padding" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:padding="@dimen/padding" />
+
+        <Button
+            android:id="@+id/btn_signin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding"
+            android:contentDescription="@string/btn_signin"
+            android:onClick="signIn"
+            android:text="@string/btn_signin" />
+
+        <TextView
             android:id="@+id/tv_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/signup"
             android:onClick="toSignUp"
-            />
+            android:text="@string/signup" />
     </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/progress_size"
-        android:layout_gravity="center|bottom"
-        android:visibility="invisible"
-        android:layout_below="@+id/linear_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="24dp" />
+        android:layout_below="@+id/linear_layout"
+        android:layout_gravity="center|bottom"
+        android:layout_marginTop="24dp"
+        android:visibility="invisible" />
 </RelativeLayout>

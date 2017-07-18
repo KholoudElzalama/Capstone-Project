@@ -6,6 +6,7 @@ import android.kholoudelzalama.i_cook.objects.Hits;
 import android.kholoudelzalama.i_cook.objects.Recipe;
 import android.kholoudelzalama.i_cook.objects.Recipes;
 import android.kholoudelzalama.i_cook.objects.User;
+import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -44,13 +45,17 @@ public class FavouritesActivity extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.drawer_fav));
 
+        if (!NetworkConnectivity.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show();
+        }
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-         mAuth = FirebaseAuth.getInstance();
-         myRef = database.getReference(getString(R.string.fb_users));
+        mAuth = FirebaseAuth.getInstance();
+        myRef = database.getReference(getString(R.string.fb_users));
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setRefreshing(true);
@@ -69,7 +74,7 @@ public class FavouritesActivity extends AppCompatActivity {
 
     }
 
-    private void getFav(){
+    private void getFav() {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -78,23 +83,22 @@ public class FavouritesActivity extends AppCompatActivity {
                 User user = new User();
                 user = dataSnapshot.child(mAuth.getCurrentUser().getUid().toString()).getValue(User.class);
                 Recipes r = new Recipes();
-                if(user.getFavourites()==null){
+                if (user.getFavourites() == null) {
                     swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(FavouritesActivity.this,getString(R.string.no_fav_toast),Toast.LENGTH_LONG).show();
-                    adapter=new HomeAdapter(FavouritesActivity.this, r);
+                    Toast.makeText(FavouritesActivity.this, getString(R.string.no_fav_toast), Toast.LENGTH_LONG).show();
+                    adapter = new HomeAdapter(FavouritesActivity.this, r);
                     recyclerView.setAdapter(adapter);
                     swipeRefreshLayout.setRefreshing(false);
-                }
-                else {
+                } else {
 
                     List<Hits> hits = new ArrayList<Hits>();
-                    for(Recipe re : user.getFavourites()){
+                    for (Recipe re : user.getFavourites()) {
                         Hits h = new Hits();
                         h.setRecipe(re);
                         hits.add(h);
                     }
                     r.setHits(hits);
-                    adapter=new HomeAdapter(FavouritesActivity.this, r);
+                    adapter = new HomeAdapter(FavouritesActivity.this, r);
                     recyclerView.setAdapter(adapter);
                     swipeRefreshLayout.setRefreshing(false);
                 }

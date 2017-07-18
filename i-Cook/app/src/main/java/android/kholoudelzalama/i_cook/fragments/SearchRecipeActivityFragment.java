@@ -27,8 +27,8 @@ public class SearchRecipeActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search_recipe, container, false);
-        searchQuery =(EditText) rootView.findViewById(R.id.et_find);
-        find=(Button)rootView.findViewById((R.id.find_btn));
+        searchQuery = (EditText) rootView.findViewById(R.id.et_find);
+        find = (Button) rootView.findViewById((R.id.find_btn));
         find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,18 +39,17 @@ public class SearchRecipeActivityFragment extends Fragment {
     }
 
 
-    public void result(){
-        if (TextUtils.isEmpty(searchQuery.getText().toString())){
+    public void result() {
+        if (TextUtils.isEmpty(searchQuery.getText().toString())) {
             searchQuery.setError(getActivity().getString(R.string.query_error));
-        }
-        else{
-            recipeListener.setselectedRecipe(searchQuery.getText().toString());
+        } else {
+            recipeListener.setSelectedRecipe(searchQuery.getText().toString());
             searchQuery.setText("");
         }
 
     }
 
-    public void setRecipeListener(RecipeListener r){
-        recipeListener=r;
+    public void setRecipeListener(RecipeListener r) {
+        recipeListener = r;
     }
 }

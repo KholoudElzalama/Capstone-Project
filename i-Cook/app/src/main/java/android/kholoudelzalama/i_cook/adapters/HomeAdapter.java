@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
  * Created by win on 10/07/2017.
  */
 
-public class HomeAdapter  extends RecyclerView.Adapter<ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<ViewHolder> {
     Recipes homeRecipes;
     Context mContext;
     Gson gson;
@@ -34,8 +34,8 @@ public class HomeAdapter  extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.grid_item, parent, false);
-            return new ViewHolder(view) ;
+        View view = inflater.inflate(R.layout.grid_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -65,14 +65,13 @@ public class HomeAdapter  extends RecyclerView.Adapter<ViewHolder> {
         });
 
 
-
     }
 
     @Override
     public int getItemCount() {
-        try{
-        return homeRecipes.getHits().size();
-        }catch (Exception e){
+        try {
+            return homeRecipes.getHits().size();
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -80,6 +79,7 @@ public class HomeAdapter  extends RecyclerView.Adapter<ViewHolder> {
 
 
 }
+
 class ViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView recipePic;

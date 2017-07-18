@@ -6,6 +6,7 @@ import android.kholoudelzalama.i_cook.adapters.HomeAdapter;
 import android.kholoudelzalama.i_cook.objects.Recipes;
 import android.kholoudelzalama.i_cook.objects.User;
 import android.kholoudelzalama.i_cook.trasformation.CircleTransform;
+import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
 import android.kholoudelzalama.i_cook.utilities.NetworkUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +48,9 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.net.URL;
 
+import static android.kholoudelzalama.i_cook.R.id.tv_email;
+import static android.kholoudelzalama.i_cook.R.id.tv_name;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<String> {
 
@@ -60,9 +64,8 @@ public class HomeActivity extends AppCompatActivity
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private View navHeader;
-    private ImageView iv_profile;
-    private TextView tv_name, tv_email;
-
+    private ImageView profilePic;
+    private TextView nameTextView, emailTextView;
 
 
     private static final int API_LOADER = 10;
@@ -80,11 +83,11 @@ public class HomeActivity extends AppCompatActivity
     Recipes recipes;
 
 
-
     public static final int PAGE_SIZE = 40;
     private boolean isLastPage = false;
     private int currentPage = 1;
     private boolean isLoading = false;
+    private boolean isConnected = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,10 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (!NetworkConnectivity.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show();
+            isConnected = false;
+        }
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(HomeActivity.this, SigninActivity.class));
@@ -112,16 +119,16 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         // Navigation header view
         navHeader = navigationView.getHeaderView(0);
-        tv_name = (TextView) navHeader.findViewById(R.id.tv_name);
-        tv_email = (TextView) navHeader.findViewById(R.id.tv_email);
-        iv_profile = (ImageView) navHeader.findViewById(R.id.iv_pp);
+        nameTextView = (TextView) navHeader.findViewById(tv_name);
+        emailTextView = (TextView) navHeader.findViewById(tv_email);
+        profilePic = (ImageView) navHeader.findViewById(R.id.iv_pp);
         navHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              startActivity(new Intent(HomeActivity.this,UserProfileActivity.class));
+                startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
             }
         });
         swipeRefreshLayout.setRefreshing(true);
@@ -129,7 +136,7 @@ public class HomeActivity extends AppCompatActivity
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        currentPage=1;
+                        currentPage = 1;
                         getSupportLoaderManager().initLoader(API_LOADER, null, HomeActivity.this);
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -139,7 +146,7 @@ public class HomeActivity extends AppCompatActivity
         getSupportLoaderManager().initLoader(API_LOADER, null, HomeActivity.this);
         final StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -162,7 +169,7 @@ public class HomeActivity extends AppCompatActivity
 
                         currentPage += 1;
                         progressBar.setVisibility(View.VISIBLE);
-                        getSupportLoaderManager().initLoader(API_LOADER_NEXT_PAGE+currentPage, null, HomeActivity.this);
+                        getSupportLoaderManager().initLoader(API_LOADER_NEXT_PAGE + currentPage, null, HomeActivity.this);
 
 
                     }
@@ -224,14 +231,14 @@ public class HomeActivity extends AppCompatActivity
                 User u = new User();
                 u = snapshot.getValue(User.class);
 
-                tv_name.setText(u.getName());
-                tv_email.setText(u.getEmail());
+                nameTextView.setText(u.getName());
+                emailTextView.setText(u.getEmail());
                 try {
                     mStorageRef.child(getString(R.string.fb_pp_folder)).child(u.getPhoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
 
-                            Picasso.with(getBaseContext()).load(uri).placeholder(R.drawable.ic_action_account_circle_40).transform(new CircleTransform()).fit().centerCrop().into(iv_profile);
+                            Picasso.with(getBaseContext()).load(uri).placeholder(R.drawable.ic_action_account_circle_40).transform(new CircleTransform()).fit().centerCrop().into(profilePic);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -260,10 +267,6 @@ public class HomeActivity extends AppCompatActivity
         return new AsyncTaskLoader<String>(this) {
             @Override
             protected void onStartLoading() {
-//                if (args == null) {
-//                    swipeRefreshLayout.setRefreshing(false);
-//                    return;
-//                }
 
 
                 forceLoad();
@@ -274,9 +277,9 @@ public class HomeActivity extends AppCompatActivity
 
                 try {
                     String searchQuery = null;
-                    int from = PAGE_SIZE *(currentPage-1);
+                    int from = PAGE_SIZE * (currentPage - 1);
                     int to = from + PAGE_SIZE;
-                    URL url = NetworkUtils.buildUrl(searchQuery, String.valueOf(from) , String.valueOf(to));
+                    URL url = NetworkUtils.buildUrl(searchQuery, String.valueOf(from), String.valueOf(to));
                     String result = NetworkUtils.getResponseFromHttpUrl(url);
 
                     return result;
@@ -292,17 +295,19 @@ public class HomeActivity extends AppCompatActivity
     public void onLoadFinished(Loader<String> loader, String data) {
         swipeRefreshLayout.setRefreshing(false);
         if (null == data) {
-            Toast.makeText(this, getString(R.string.api_limits), Toast.LENGTH_LONG).show();
+            if (isConnected) {
+                Toast.makeText(this, getString(R.string.api_limits), Toast.LENGTH_LONG).show();
+            }
         } else {
             recipes = gson.fromJson(data, Recipes.class);
-            adapter=new HomeAdapter(HomeActivity.this, recipes);
+            adapter = new HomeAdapter(HomeActivity.this, recipes);
             recyclerView.setAdapter(adapter);
-            if(recipes.getHits().size()==0){
+            if (recipes.getHits().size() == 0) {
                 isLastPage = true;
             }
-            if(currentPage>1){
+            if (currentPage > 1) {
                 progressBar.setVisibility(View.INVISIBLE);
-                isLoading=false;
+                isLoading = false;
                 adapter.notifyDataSetChanged();
             }
 

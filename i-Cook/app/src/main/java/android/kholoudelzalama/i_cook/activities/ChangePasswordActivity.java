@@ -3,6 +3,7 @@ package android.kholoudelzalama.i_cook.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.kholoudelzalama.i_cook.R;
+import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -39,9 +40,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.btn_reset_password));
+        if (!NetworkConnectivity.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show();
+        }
         oldPassword = (EditText) findViewById(et_old_password);
         newPassword = (EditText) findViewById(R.id.et_new_password);
-        progressDialog =new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.loading_password));
     }
 
@@ -49,7 +53,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         final FirebaseUser user;
         AuthCredential credential;
         progressDialog.show();
-        if (!TextUtils.isEmpty(oldPassword.getText().toString())&&!TextUtils.isEmpty(newPassword.getText().toString())) {
+        if (!TextUtils.isEmpty(oldPassword.getText().toString()) && !TextUtils.isEmpty(newPassword.getText().toString())) {
             if (newPassword.getText().length() < 6) {
                 newPassword.setError(getString(R.string.password_limit));
                 return;
@@ -87,18 +91,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             }
                         }
                     });
-        }
-        else
-        {
+        } else {
             progressDialog.dismiss();
-            if(TextUtils.isEmpty(oldPassword.getText().toString())&&TextUtils.isEmpty(newPassword.getText().toString())) {
+            if (TextUtils.isEmpty(oldPassword.getText().toString()) && TextUtils.isEmpty(newPassword.getText().toString())) {
                 oldPassword.setError(getString(R.string.enter_password));
                 newPassword.setError(getString(R.string.enter_password));
-            }
-            else if(TextUtils.isEmpty(oldPassword.getText().toString())) {
+            } else if (TextUtils.isEmpty(oldPassword.getText().toString())) {
                 oldPassword.setError(getString(R.string.enter_password));
-            }
-            else if (TextUtils.isEmpty(newPassword.getText().toString())) {
+            } else if (TextUtils.isEmpty(newPassword.getText().toString())) {
                 newPassword.setError(getString(R.string.enter_password));
             }
         }

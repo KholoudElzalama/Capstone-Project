@@ -37,8 +37,12 @@
     <string name="msg_suc">تم ارسال رسالتك بنجاح</string>
     <string name="about_us">عن التطبيق</string>
     <string name="no_result">عذرا, لا يوجد نتيجة لهذا البحث</string>
-
-
+    <string name="no_network">تأكد من اتصالك بالانترنت</string>
+    <string name="make_fav">اجعله مفضلا</string>
+    <string name="user_pic">صوره الحساب</string>
+    <string name="edit_pic">تعديل الصوره</string>
+    <string name="recipe_pic">صوره الوصفة</string>
+    <string name="user_prof">حساب المستخدم</string>
 
 
     <string name="action_settings">الاعدادات</string>

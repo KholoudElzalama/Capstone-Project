@@ -5,5 +5,5 @@ package android.kholoudelzalama.i_cook.interfaces;
  */
 
 public interface RecipeListener {
-    public void setselectedRecipe(String query);
+    public void setSelectedRecipe(String query);
 }
