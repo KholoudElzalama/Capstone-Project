@@ -57,15 +57,20 @@
                 android:value="android.kholoudelzalama.i_cook.activities.SearchRecipeActivity" />
         </activity>
 
-        <receiver android:name=".widget.SearchWidget">
+
+        <receiver android:name=".widget.FavouritesWidget">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="Action_Widget_Data"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/search_widget_info" />
+                android:resource="@xml/favourites_widget_info" />
         </receiver>
+
+        <service android:name=".widget.FavouriteWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

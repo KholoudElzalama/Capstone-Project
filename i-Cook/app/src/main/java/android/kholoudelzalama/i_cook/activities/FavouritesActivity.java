@@ -1,5 +1,6 @@
 package android.kholoudelzalama.i_cook.activities;
 
+import android.content.Intent;
 import android.kholoudelzalama.i_cook.R;
 import android.kholoudelzalama.i_cook.adapters.HomeAdapter;
 import android.kholoudelzalama.i_cook.objects.Hits;
@@ -75,6 +76,11 @@ public class FavouritesActivity extends AppCompatActivity {
     }
 
     private void getFav() {
+        if (mAuth.getCurrentUser() == null) {
+            swipeRefreshLayout.setRefreshing(false);
+            startActivity(new Intent(FavouritesActivity.this, SigninActivity.class));
+            return;
+        }
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -110,5 +116,7 @@ public class FavouritesActivity extends AppCompatActivity {
                 Log.w("RecipeActivity", "Failed to read value.", error.toException());
             }
         });
+
+
     }
 }

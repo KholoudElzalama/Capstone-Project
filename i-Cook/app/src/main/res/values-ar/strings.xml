@@ -58,5 +58,6 @@
     <string name="api_limits">نعتذر , لا يمكن استدعاء البيانات اكثر من 5 مرات في الدقيقه الواحده</string>
     <string name="find_btn">اوجد</string>
     <string name="query_error">ادخل قيمة</string>
+    <string name="btn_widget_open">افتح المفضلات</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.kholoudelzalama.i_cook.adapters.IngredientsAdapter;
 import android.kholoudelzalama.i_cook.objects.Recipe;
 import android.kholoudelzalama.i_cook.objects.User;
 import android.kholoudelzalama.i_cook.utilities.NetworkConnectivity;
+import android.kholoudelzalama.i_cook.widget.FavouritesWidget;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -189,5 +190,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
             }
         }
+        Intent updateIntent = new Intent(this,
+                FavouritesWidget.class);
+        updateIntent.setAction(
+                "Action_Widget_Data");
+        sendBroadcast(updateIntent);
     }
 }

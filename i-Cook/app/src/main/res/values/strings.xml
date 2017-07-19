@@ -77,6 +77,7 @@
     <!--intent extras-->
     <string name="recipe_details_extra" translatable="false">recipeDetails</string>
     <string name="query_extra" translatable="false">query</string>
+    <string name="btn_widget_open">Open Favourites</string>
 
 
 </resources>

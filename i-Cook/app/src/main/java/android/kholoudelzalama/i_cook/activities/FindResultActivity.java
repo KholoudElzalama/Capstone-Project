@@ -23,11 +23,11 @@ public class FindResultActivity extends AppCompatActivity {
         }
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.query_extra),intent.getStringExtra(getString(R.string.query_extra)));
+        bundle.putString(getString(R.string.query_extra), intent.getStringExtra(getString(R.string.query_extra)));
         FindResultActivityFragment fragment = new FindResultActivityFragment();
         fragment.setArguments(bundle);
-        if(null==savedInstanceState){
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment,fragment).commit();
+        if (null == savedInstanceState) {
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
         }
 
     }
