@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'i-cook'
             keyPassword '123456789'
-            storeFile file('$rootdir/icook_key_store.jks')
+            storeFile file("$rootDir/icook_key_store.jks")
             storePassword '123456789'
         }
     }
